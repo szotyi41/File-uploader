@@ -77,6 +77,10 @@ function fupl_startUpload(params) {
     data.append('file', params.file);
     data.append('index', params.index);
 
+    if(params.postdata) {
+        data.append('postdata', JSON.stringify(params.postdata()));
+    }
+
     if(params.upload) {
         params.upload({
             index: params.index, 
