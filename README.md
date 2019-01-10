@@ -12,6 +12,12 @@ $(".upload-container").initUpload({
 	],
 	sizeMax: 99999999999,
 	sizeMin: 0,
+	postdata: function() {
+		// Set sendable post data in this return, it will put into a json and you can get from json_decode($_POST['postdata'])
+		return {
+			user_token: "N342JK5B4J"
+		}
+	},
 	upload: function(data) {
 		// Template of uploading boxes (filedata, status, progressbar, remove button)
 		$(".upload-files").append(
