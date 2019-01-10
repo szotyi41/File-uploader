@@ -16,30 +16,37 @@
 	$(".upload-container").initUpload({
 		url: "upload.php",
 		mimetypes: [
-			"video/*",
-			"image/jpeg"
+			"image/*"
 		],
-		sizeMax: 9999996999,
+		sizeMax: 9999999999,
 		sizeMin: 0,
 		upload: function(data) {
-			$(".upload-files").append("<div class='file' id='file-" + data.index + "'>" + 
-					"Index: " + data.index + "<br>" +
-					"Filename: " + data.file.name + "<br>" +
-					"Filesize: " + bytesToSize(data.file.size) + "<br>" +
-					"Filetype: " + data.file.type + "<br>" +
-					"<span class='status'></span><br>" +
+			$(".upload-files").append("<div class='file' id='file-" + data.index + "'>" +
+					"<div class='file-thumbnail'>" +
+						"<img></img>" +
+					"</div>" +
+					"<div class='file-info'>" +
+						"Index: " + data.index + "<br>" +
+						"Filename: " + data.file.name + "<br>" +
+						"Filesize: " + bytesToSize(data.file.size) + "<br>" +
+						"Filetype: " + data.file.type + "<br>" +
+						"<span class='file-status'></span><br>" +
+					"</div>" +
+					"<div class='file-progress'></div>" +
 				"</div>"
 			);
 		}, 
 		uploading: function(data) {
-			$(".upload-files #file-" + data.index + " .status").html(data.percent + "%");
+			$(".upload-files #file-" + data.index + " .file-progress").css({width: data.percent + "%"});
+			$(".upload-files #file-" + data.index + " .file-status").html(data.percent + "%");
 		}, 
 		success: function(data) {
-			$(".upload-files #file-" + data.index + " .status").html("Uploaded");
+			$(".upload-files #file-" + data.index + " .file-thumbnail img").attr("src", "uploads/" + data.response.file.name);
+			$(".upload-files #file-" + data.index + " .file-status").html("Uploaded");
 		}, 
 		error: function(data) {
 			console.log(data.index, "Error: " + data.response.responseText);
-			$(".upload-files #file-" + data.index + " .status").html("Error: " + data.response.responseText);
+			$(".upload-files #file-" + data.index + " .file-status").html("Error: " + data.response.responseText);
 		},
 		complete: function(data) {
 
@@ -68,6 +75,7 @@
 		justify-content: center;
 		font-size: 18px;
 		color: #aaa;
+		box-sizing: border-box;
 		transition: color 0.5s, border-color 0.5s;
 	}
 
@@ -88,7 +96,7 @@
 	}
 
 	.upload-container .upload-button:hover {
-		background-color: #ddd;
+		background-color: #aaa;
 	}
 
 	.upload-container .upload-button input[type="file"] {
@@ -108,14 +116,59 @@
 		transform: translate(-50%, -50%);
 	}
 
-	.upload-files .upload-progress {
-		width: 0;
-		height: 8px;
-		background: red;
+	.upload-container .upload-button:hover span { 
+		color: #fff;
+	}
+
+	.upload-files {
+		display: block;
+		width: 400px;
 	}
 
 	.upload-files .file {
-		border: 1px solid gray;
-		padding: 16px;
+		position: relative;
+		border: 2px solid #999;
+		margin-top: 8px;
+		height: 128px;
+		clear: both;
 	}
+
+	.upload-files .file-progress {
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		width: 0px;
+		height: 4px;
+		background: rgba(0,255,0, 0.8);
+		z-index: 1;
+		transform: width 0.5s;
+	}
+
+	.upload-files .file .file-info {
+		float: left;
+		padding: 8px;
+		color: #999;
+		font-size: 14px;
+		max-width: 50%;
+		overflow: scroll;
+		white-space: nowrap;
+		box-sizing: border-box;
+	}
+
+	.upload-files .file .file-thumbnail {
+		position: relative;
+		float: left;
+		width: 50%;
+		height: 100%;
+		background: #eee;
+	}
+
+	.upload-files .file .file-thumbnail img {
+		position: absolute;
+		top: 0;
+		left: 50%;
+		transform: translateX(-50%);
+		height: 100%;
+	}
+
 </style>

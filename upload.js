@@ -37,10 +37,8 @@ $.fn.initUpload = function(params) {
 
 function fupl_addFiles(files, params) {
     for(var index = 0, file; file = files[index]; index++) {
-
         params.index = fupl_fileIndex;
         params.file = file;
-
         fupl_startUpload(params);
         fupl_fileIndex++;
     }    
@@ -77,6 +75,7 @@ function fupl_startUpload(params) {
 
     var data = new FormData();
     data.append('file', params.file);
+    data.append('index', params.index);
 
     if(params.upload) {
         params.upload({
@@ -113,6 +112,8 @@ function fupl_startUpload(params) {
         return;
     }
 
+    var index = params.index;
+
     $.ajax({
         url: params.url,
         type: 'post',
@@ -123,18 +124,19 @@ function fupl_startUpload(params) {
         xhr: function() {
             var xhrobj = $.ajaxSettings.xhr();
             if (xhrobj.upload) {
-                xhrobj.upload.addEventListener('progress', function(event) {
-                    var percent = 0;
-                    var position = event.loaded || event.position;
-                    var total = event.total;
+                xhrobj.upload.addEventListener('progress', function(e) {
 
-                    if (event.lengthComputable) {
+                    var percent = 0;
+                    var position = e.loaded || e.position;
+                    var total = e.total;
+
+                    if (e.lengthComputable) {
                         percent = Math.ceil(position / total * 100);
                     } 
 
                     if(params.uploading) {
                         params.uploading({
-                            index: params.index, 
+                            index: index, 
                             percent: percent, 
                             file: params.file
                         });
@@ -147,7 +149,7 @@ function fupl_startUpload(params) {
         success: function(response, status) {
             if(params.success) {
                 params.success({
-                    index: params.index, 
+                    index: index, 
                     response: response, 
                     status: status, 
                     file: params.file
@@ -157,7 +159,7 @@ function fupl_startUpload(params) {
         error: function(response, status) {
             if(params.complete) {
                 params.error({
-                    index: params.index, 
+                    index: index, 
                     response: response, 
                     status: status, 
                     file: params.file
@@ -167,7 +169,7 @@ function fupl_startUpload(params) {
         complete: function(response, status) {
             if(params.complete) {
                 params.complete({
-                    index: params.index, 
+                    index: index, 
                     response: response, 
                     status: status, 
                     file: params.file
