@@ -4,7 +4,7 @@
 <div class="upload-container">Drop files here or 
 	<div class="upload-button" style="margin-left: 10px">
 		<span>Select</span>
-		<input type="file">
+		<input type="file" class="upload-button-input">
 	</div>
 </div>
 
@@ -20,6 +20,14 @@
 		],
 		sizeMax: 9999999999,
 		sizeMin: 0,
+		button: function() {
+			return $(".upload-button-input");
+		},
+		postdata: function() {
+			return {
+				user_token: "FEIOF67F783"
+			} 
+		},
 		upload: function(data) {
 			$(".upload-files").append("<div class='file' id='file-" + data.index + "'>" +
 					"<div class='file-thumbnail'>" +
