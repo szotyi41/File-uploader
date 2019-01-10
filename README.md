@@ -12,6 +12,9 @@ $(".upload-container").initUpload({
 	],
 	sizeMax: 99999999999,
 	sizeMin: 0,
+	button: function() {
+		return $(".upload-button");
+	},
 	postdata: function() {
 		// Set sendable post data in this return, it will put into a json and you can get from json_decode($_POST['postdata'])
 		return {

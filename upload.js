@@ -2,6 +2,7 @@
 var fupl_fileIndex = 0;
 
 $.fn.initUpload = function(params) {
+
     this.each(function() {
         $(this).on('dragenter', function(e) {
             e.stopPropagation();
@@ -27,10 +28,10 @@ $.fn.initUpload = function(params) {
             var files = e.originalEvent.target.files || e.originalEvent.dataTransfer.files;
             fupl_addFiles(files, params);
         });
-    });        
+    });
 
-    $(this).find('input[type=file]').on('change', function(e) {
-        var files = this.files;
+    $(document).on('change', params.button, function(e) {
+        var files = params.button()[0].files;
         fupl_addFiles(files, params);
     });
 };
@@ -61,6 +62,7 @@ function fupl_checkMime(params) {
         }
         return false;
     } else {
+        console.log("nincsmegadva");
         return true;
     }
 };
