@@ -12,6 +12,7 @@ $(".upload-container").initUpload({
 	],
 	sizeMax: 99999999999,
 	sizeMin: 0,
+	multiple: true,
 	button: function() {
 		return $(".upload-button");
 	},
