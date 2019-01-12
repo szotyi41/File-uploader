@@ -20,6 +20,7 @@
 		],
 		sizeMax: 9999999999,
 		sizeMin: 0,
+		multiple: false,
 		button: function() {
 			return $(".upload-button-input");
 		},
@@ -43,7 +44,7 @@
 					"<div class='file-progress'></div>" +
 				"</div>"
 			);
-		}, 
+		},
 		uploading: function(data) {
 			$(".upload-files #file-" + data.index + " .file-progress").css({width: data.percent + "%"});
 			$(".upload-files #file-" + data.index + " .file-status").html(data.percent + "%");
@@ -53,7 +54,6 @@
 			$(".upload-files #file-" + data.index + " .file-status").html("Uploaded");
 		}, 
 		error: function(data) {
-			console.log(data.index, "Error: " + data.response.responseText);
 			$(".upload-files #file-" + data.index + " .file-status").html("Error: " + data.response.responseText);
 		},
 		complete: function(data) {

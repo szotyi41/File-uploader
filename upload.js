@@ -30,6 +30,7 @@ $.fn.initUpload = function(params) {
         });
     });
 
+    $(params.button()).prop("multiple", params.multiple);
     $(document).on('change', params.button, function(e) {
         var files = params.button()[0].files;
         fupl_addFiles(files, params);
@@ -37,12 +38,21 @@ $.fn.initUpload = function(params) {
 };
 
 function fupl_addFiles(files, params) {
-    for(var index = 0, file; file = files[index]; index++) {
-        params.index = fupl_fileIndex;
-        params.file = file;
-        fupl_startUpload(params);
-        fupl_fileIndex++;
-    }    
+    if(params.multiple === true) {
+        for(var index = 0, file; file = files[index]; index++) {
+            params.index = fupl_fileIndex;
+            params.file = file;
+            fupl_startUpload(params);
+            fupl_fileIndex++;
+        }        
+    } else {
+        if(files.length === 1) { 
+            fupl_fileIndex = 0;
+            params.index = fupl_fileIndex;
+            params.file = files[0];
+            fupl_startUpload(params);
+        }
+    }
 };
 
 function fupl_checkMime(params) {
@@ -62,7 +72,6 @@ function fupl_checkMime(params) {
         }
         return false;
     } else {
-        console.log("nincsmegadva");
         return true;
     }
 };
